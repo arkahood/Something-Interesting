@@ -13,6 +13,8 @@ module.exports={
         static: ["./public"],
         open: true,
         hot: true ,
+        // For enabling routing 
+        historyApiFallback: true,
         liveReload: true
     },
     resolve: {
