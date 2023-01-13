@@ -41,7 +41,7 @@ const Navbar = () => {
             <Link to="/" style={{ color: 'inherit', textDecoration: 'inherit'}}>Home</Link>
           </Typography>
           <div>
-          <Link to="/login" style={{ color: 'inherit', textDecoration: 'inherit'}}>
+          <Link to="/signup" style={{ color: 'inherit', textDecoration: 'inherit'}}>
             <Button color='inherit' variant="outlined">Login</Button>
             </Link>
           </div>
