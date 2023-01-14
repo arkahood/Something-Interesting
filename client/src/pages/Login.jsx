@@ -12,6 +12,9 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 
+import { useDispatch, useSelector } from 'react-redux';
+import { loginUser } from '../redux-toolkit/slices/authSlice';
+
 // function Copyright(props) {
 //   return (
 //     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -29,16 +32,22 @@ const theme = createTheme();
 
 export default function Login() {
 
+  const [userDetails, setUserDetails] = React.useState({
+    username : "",
+    password : ""
+  });
+  const isLoggedIn = useSelector((state)=>state.auth.isLoggedin);
+  const dispatch = useDispatch();
+
     const navigate = useNavigate();
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-    navigate("/");
+    dispatch(loginUser(userDetails));
   };
+
+  React.useEffect(()=>{
+    isLoggedIn && navigate("/")
+  },[isLoggedIn]);
  
   return (
     <ThemeProvider theme={theme}>
@@ -68,6 +77,7 @@ export default function Login() {
                   label="username"
                   name="email"
                   autoComplete="email"
+                  onChange={(e)=>setUserDetails({...userDetails, username:e.target.value})}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -79,6 +89,7 @@ export default function Login() {
                   type="password"
                   id="password"
                   autoComplete="new-password"
+                  onChange={(e)=>setUserDetails({...userDetails, password:e.target.value})}
                 />
               </Grid>
             </Grid>

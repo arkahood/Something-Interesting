@@ -15,7 +15,14 @@ module.exports={
         hot: true ,
         // For enabling routing 
         historyApiFallback: true,
-        liveReload: true
+        liveReload: true,
+        proxy: {
+            '/user': {
+                 target: 'http://localhost:3000',
+                 router: () => 'http://localhost:9000',
+                 logLevel: 'debug'
+            }
+         }
     },
     resolve: {
         extensions: ['.js','.jsx','.json'] 

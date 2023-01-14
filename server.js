@@ -3,12 +3,17 @@ import dotenv from "dotenv";
 import db from "./db/mongoDB.js";
 import router from "./routes/userRoutes.js";
 import authRouter from "./routes/authRoutes.js";
+import cors from 'cors';
+
+
 
 import path from 'path';
 
 dotenv.config();
 
 const app = express();
+
+app.use(cors());
 
 app.use(express.json());
 app.use("/user", router);

@@ -10,12 +10,22 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 
 
 import { Button } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
+import {logout} from '../redux-toolkit/slices/authSlice';
 
 
 const Navbar = () => {
 
+  const isLoggedIn = useSelector((state)=>state.auth.isLoggedin);
+
+  const dispatch = useDispatch();
+
   const clck = () => {
     window.alert("Clicked");
+  }
+
+  const handlelogout = ()=>{
+    dispatch(logout());
   }
 
   return (
@@ -40,11 +50,19 @@ const Navbar = () => {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} style={{cursor:"grab"}} onClick={clck}>
             <Link to="/" style={{ color: 'inherit', textDecoration: 'inherit'}}>Home</Link>
           </Typography>
-          <div>
-          <Link to="/signup" style={{ color: 'inherit', textDecoration: 'inherit'}}>
-            <Button color='inherit' variant="outlined">Login</Button>
-            </Link>
-          </div>
+
+          {/*  */}
+          {isLoggedIn ?
+            <div>
+              <Button color='inherit' variant="outlined" onClick={handlelogout}>LogOut</Button>
+            </div>  
+          :
+            <div>
+            <Link to="/signup" style={{ color: 'inherit', textDecoration: 'inherit'}}>
+              <Button color='inherit' variant="outlined">Login</Button>
+              </Link>
+            </div>
+          } 
         </Toolbar>
       </AppBar>
     </Box>

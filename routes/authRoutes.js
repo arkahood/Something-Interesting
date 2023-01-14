@@ -6,13 +6,13 @@ const router = express.Router();
 
 router.post("/signup",async(req,res)=>{
     const {username, email, password} = req.body;
-
+    console.log(req.body);
     // Check if username or email already exits or not
     const alreadyExistedUser = await User.findOne({$or:[
         {username : username },
         {email : email}
     ]});
-    if(alreadyExistedUser) return res.status(400).send({msg : "Username or email alreary exists"});
+    if(alreadyExistedUser) return res.status(400).send({error : "Username or email alreary exists"});
 
     const user = new User({...req.body});
     try {
@@ -20,7 +20,8 @@ router.post("/signup",async(req,res)=>{
         user.save();
         //Generate the token
         const token = getAuthtoken(user);
-        res.status(200).send(token);
+        console.log(token);
+        res.status(200).send({token});
     } catch (error) {
         console.log(err);
         res.status(400).send({msg: "not worked"});
@@ -29,16 +30,23 @@ router.post("/signup",async(req,res)=>{
 
 router.post("/signin",async(req,res)=>{
     const {username, password} = req.body;
-
+    console.log(req.body);
     // Check if username exits or not
-    const isUsernameExists = await User.findOne({username : username });
-    if(!isUsernameExists) return res.status(400).send({msg : "Username don't exists"});
+    try {
+        const isUsernameExists = await User.findOne({username : username });
+        console.log(isUsernameExists);
+        if(!isUsernameExists) res.status(400).send({error : "Username don't exists"});
 
-    if(!(isEmailExists.password === password)) return res.status(400).send({msg : "password didn't match"});
+        if((isUsernameExists.password !== password)) res.status(400).send({error : "password didn't match"});
 
-    //generate the token
-    const token = getAuthtoken(isEmailExists);
-    res.status(200).send(token);
+        //generate the token
+        const token = getAuthtoken(isUsernameExists);
+        res.status(200).send({token});
+        
+    } catch (error) {
+        console.log(error);
+    }
+    
 })
 
 export default router;
